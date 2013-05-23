@@ -99,13 +99,13 @@ module Exif
     #
     # create a new object. fpath is String.
     #
-    def initialize(fpath)
-      @fpath = fpath
-      @scanner = nil
-      File.open(fpath, "rb") do |f|
-        @scanner = Exif::Scanner.new(f)
-        @scanner.scan
-      end
+    def initialize(file_handler)
+      @scanner = Exif::Scanner.new prepare_file(file_handler)
+      @scanner.scan
+      init_from_scanner
+    end
+
+    def init_from_scanner
       @IFD0 = @scanner.result[:IFD0]
       @IFD1 = @scanner.result[:IFD1]
       @Exif = @scanner.result[:Exif]
@@ -113,6 +113,16 @@ module Exif
       @Interoperability = @scanner.result[:Interoperability]
       @MakerNote = @scanner.result[:MakerNote]
       @thumbnail = @scanner.result[:Thumbnail]
+    end
+
+    def prepare_file(handler)
+      if handler.is_a? String
+        @fpath = handler
+        File.open(handler, "rb")
+      elsif handler.is_a?(StringIO) || handler.is_a?(File)
+        @fpath = 'dummy_file'
+        handler
+      end
     end
 
     def inspect
@@ -225,6 +235,15 @@ module Exif
           yield tag
         end
       end
+    end
+
+    def marshal_dump
+      {scanner: Marshal.dump(@scanner)}
+    end
+
+    def marshal_load marshaled
+      @scanner = Marshal.load marshaled[:scanner]
+      init_from_scanner
     end
 
     private
