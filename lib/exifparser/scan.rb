@@ -210,6 +210,20 @@ module Exif
       puts(sprintf("scan time: %1.4f sec.", toc-tic)) if $DEBUG
     end
 
+    def marshal_dump
+      {
+        result: Marshal.dump(@result),
+        tiffHeader0: Marshal.dump(@tiffHeader0),
+        byteOrder_module: Marshal.dump(@byteOrder_module)
+      }
+    end
+
+    def marshal_load marshaled
+      @result = Marshal.load marshaled[:result]
+      @tiffHeader0 = Marshal.load marshaled[:tiffHeader0]
+      @byteOrder_module = Marshal.load marshaled[:byteOrder_module]
+    end
+
     private
 
     def fin_read_n(n)
