@@ -102,6 +102,10 @@ module Exif
     def initialize(file_handler)
       @scanner = Exif::Scanner.new prepare_file(file_handler)
       @scanner.scan
+      init_from_scanner
+    end
+
+    def init_from_scanner
       @IFD0 = @scanner.result[:IFD0]
       @IFD1 = @scanner.result[:IFD1]
       @Exif = @scanner.result[:Exif]
@@ -231,6 +235,15 @@ module Exif
           yield tag
         end
       end
+    end
+
+    def marshal_dump
+      {scanner: Marshal.dump(@scanner)}
+    end
+
+    def marshal_load marshaled
+      @scanner = Marshal.load marshaled[:scanner]
+      init_from_scanner
     end
 
     private
