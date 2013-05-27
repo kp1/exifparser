@@ -14,6 +14,7 @@ require 'exifparser/makernote/nikon'
 require 'exifparser/makernote/nikon2'
 require 'exifparser/makernote/minolta'
 require 'exifparser/makernote/sigma'
+require 'exifparser/makernote/sony'
 
 module Exif
 
@@ -68,6 +69,12 @@ module Exif
       #
       elsif make[0..4] == 'SIGMA'
         return Sigma
+
+      #
+      # Sony
+      #
+      elsif make[0..3] == 'SONY'
+        return Sony
 
       end
 

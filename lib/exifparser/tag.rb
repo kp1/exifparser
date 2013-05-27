@@ -871,6 +871,7 @@ module Exif
       class ISOSpeedRatings < Base
       end
 
+      
       #
       # 0x9000 - ExifVersion
       #
@@ -890,6 +891,8 @@ module Exif
             "Exif Version 2.2"
           when "0221"
             "Exif Version 2.21"
+          when "0230"
+            "Exif Version 2.3"
           else
             "Unknown Exif Version"
           end
@@ -1645,6 +1648,19 @@ module Exif
       class ImageUniqueID < Base
       end
 
+      #
+      # 0xa433 - LensMake
+      #
+      class LensMake < Base
+      end
+
+      #
+      # 0xa434 - LensModel
+      #
+      class LensModel < Base
+      end
+
+
     end
 
     ##
@@ -2230,7 +2246,9 @@ module Exif
       0xa40a => Exif::Sharpness,
       0xa40b => Exif::DeviceSettingDescription,
       0xa40c => Exif::SubjectDistanceRange,
-      0xa420 => Exif::ImageUniqueID
+      0xa420 => Exif::ImageUniqueID,
+      0xa433 => Exif::LensMake,
+      0xa434 => Exif::LensModel
     }
 
     def ExifIFDTable.name
