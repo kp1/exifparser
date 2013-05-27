@@ -6,8 +6,8 @@ require 'exifparser/version'
 Gem::Specification.new do |spec|
   spec.name          = "exifparser"
   spec.version       = ExifParser::VERSION
-  spec.authors       = ["kp"]
-  spec.email         = ["knomura.1394@gmail.com"]
+  spec.authors       = ["kp", "n-kashi"]
+  spec.email         = ["knomura.1394@gmail.com", "kashijuku@gmail.com"]
   spec.description   = %q{Exif tag parser written in pure Ruby}
   spec.summary       = %q{Exif tag parser written in pure Ruby}
   spec.homepage      = ""
