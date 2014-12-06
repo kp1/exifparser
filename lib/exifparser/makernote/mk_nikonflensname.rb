@@ -19,12 +19,21 @@ module Exif
       LensName = {
 TEOS
 
+dupkeycheck = []
+
 open(ARGV[0], "r") do |file|
   file.each_line do |s|
     if (/^\{(0x..),(0x..),(0x..),(0x..),(0x..),(0x..),(0x..),0x..,0x..,0x..,0x.., \"(.*)\", ".*", "(.*)"\}/ =~ s) != nil
-      str = %Q[        \[#{$1}, #{$2}, #{$3}, #{$4}, #{$5}, #{$6}, #{$7}\] => "#{$8} #{$9}"]
-      str.sub!("f/", "F") if str.include?("Nikon")
-      print str + ",\n"
+
+      key = [$1, $2, $3, $4, $5, $6, $7]
+      unless dupkeycheck.include?(key)
+        dupkeycheck << key
+        str = %Q[        \[#{$1}, #{$2}, #{$3}, #{$4}, #{$5}, #{$6}, #{$7}\] => "#{$8} #{$9}"] + ",\n"
+      else
+        str = %Q[#[DUP]  \[#{$1}, #{$2}, #{$3}, #{$4}, #{$5}, #{$6}, #{$7}\] => "#{$8} #{$9}"] + ",\n"
+      end
+
+      print str
     end
   end
 end
